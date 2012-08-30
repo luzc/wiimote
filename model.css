@@ -1,0 +1,71 @@
+html, body {
+	text-align: center;
+	font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+header {
+	width: 1024px;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+h1 {
+	font-size: 36px;
+	font-weight: 300;
+	text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+header .description {
+	padding: 10px;
+	border: 1px solid #ccc;
+	background: #E0ECFF;
+}
+
+.shadow {
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+canvas {
+	background: black;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#main-container {
+	width: 1024px;
+	margin: auto;
+}
+
+#main-container > div {
+	float: left;
+}
+
+#container {
+	width: 764px;
+	text-align: left;
+}
+
+#angles {
+	width: 260px;
+	background: #ddd;
+	padding: 15px 0;
+}
+
+#angles ul {
+	margin: 0;
+	padding: 0;
+}
+
+#angles ul li {
+	list-style-type: none;
+	margin-bottom: 11px;
+}
+
+#angles ul li img {
+	width: 200px;
+	display: block;
+	margin: auto;
+}
+
+#angles ul li span {
+	font-style: italic;
+}

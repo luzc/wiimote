@@ -2,8 +2,8 @@
 var $ = function(d) { return document.getElementById(d); };
 
 // scene size
-var WIDTH = window.innerWidth/3, 
-  HEIGHT = window.innerHeight/3;
+var WIDTH = 724, 
+  HEIGHT = 512;
 
 // camera settings: fov, aspect ratio, near, far
 var FOV = 45,
@@ -12,22 +12,20 @@ var FOV = 45,
   FAR = 10000;
 
 // get the DOM element to attach to
-var $container = $('container');
+var container = $('container');
 
 // create a WebGL renderer, set its size and append it to the DOM
 var renderer = new THREE.WebGLRenderer();
 
 renderer.setSize(WIDTH, HEIGHT);
 
-renderer.setClearColorHex(0xCCC, 1);
+renderer.setClearColorHex(0x111111, 1);
 renderer.clear();
 
-//$container.append(renderer.domElement);
-document.body.appendChild(renderer.domElement);
+container.appendChild(renderer.domElement);
 
 // create a camera and position camera on z axis (starts at 0,0,0)
 var camera = new THREE.PerspectiveCamera( FOV, ASPECT, NEAR, FAR);
-
 camera.position.z = 100;
 
 // create a scene
@@ -47,9 +45,12 @@ var loader = new THREE.JSONLoader(),
 	
 	  teapot.scale.set(8, 8, 8);
 	
-	  teapot.position.set( 0, 0, 0 );
+	  teapot.position.set( 0, -10, 0 );
 
 	  scene.add( teapot );
+	  
+	console.log('matrix ' + teapot.matrix);
+    console.log('rotation ' + teapot.rotation.x);
   };
 
 loader.load('teapot-model.js', createScene );
@@ -59,22 +60,12 @@ var light = new THREE.SpotLight();
 light.position.set( 170, 330, -160 );
 scene.add(light);
 
+light = new THREE.AmbientLight(0x333333);
+// light.position.set( 170, 330, -160 );
+scene.add(light);
+
 // enable shadows on the renderer
 renderer.shadowMapEnabled = true;
-
-// enable shadows for a light
-light.castShadow = true;
-
-// enable shadows for the teapot
-//teapot.castShadow = true;
-//teapot.receiveShadow = true;
-
-// add a floor that'll receive the shadow
-var planeGeo = new THREE.PlaneGeometry(400, 200, 10, 10);
-var planeMat = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
-var plane = new THREE.Mesh(planeGeo, planeMat);
-plane.receiveShadow = true;
-scene.add(plane);
 
 // draw
 renderer.render(scene, camera);
@@ -82,7 +73,7 @@ animate();
 
 //animate
 function animate() {
-	requestAnimationFrame( animate );
+	requestAnimationFrame(animate);
 	renderer.render(scene, camera);
 }
 
@@ -91,22 +82,22 @@ window.addEventListener('DOMContentLoaded', function init() {
   var ws = new WebSocket('ws://0.0.0.0:8080/');
   ws.onopen = function() {
     console.log('connection');
+	var alpha = $('alpha-value'),
+		beta = $('beta-value'),
+		gamma = $('gamma-value');
+		
     ws.onmessage = function(e) {
-      var data = JSON.parse(e.data);
-       if( data.alpha){
-         //moon.rotation.y = -data.alpha / 300;
-         //moon.rotation.x = data.beta / 300;
-         //moon.rotation.z = data.gamma / 300;
-         //moon.update();
-       } else {
-         var src = data.img;
-         var img = new Image();
-         img.src = src;
-         img.onload = function() {
-           document.body.appendChild(img);
-         };
-         console.log(data);
-       }
+      var data = JSON.parse(e.data),
+		  avalue = data.alpha / 180 * Math.PI,
+		  bvalue = data.beta / 180 * Math.PI,
+		  gvalue = data.gamma / 180 * Math.PI;
+		
+        teapot.rotation.set(gvalue, avalue, -bvalue);
+		alpha.innerHTML = Math.round(avalue * 10) / 10;
+		beta.innerHTML = Math.round(bvalue * 10) / 10;
+		gamma.innerHTML = Math.round(gvalue * 10) / 10;
+		
+        // console.log(data);
      };
    };
 });

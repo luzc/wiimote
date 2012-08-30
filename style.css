@@ -3,9 +3,13 @@ html, body {
   padding: 0;
 }
 
-video {
-  width: 5px;
+#message {
   padding: 10px 10px 10px 10px;
+  background-color: #DDD;
+  font-family:'trebuchet ms', 'lucida grande', 'lucida sans unicode', arial, helvetica, sans-serif;
+  text-align: center;
+  color: #FF0066;
   background-position: 0px 0px;
   position: relative;
+  margin: auto;
 }

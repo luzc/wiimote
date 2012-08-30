@@ -1,16 +1,35 @@
 <!doctype html>
 <html>
-  <head></head>
+  <head>
+    <link href='model.css' type='text/css' rel='stylesheet'>
+  </head>
   <body>
-    <div id='container'></div>
-    <!--
-    <script src='qrcode.js'></script>
-    <script src='PhiloGL.js'></script>
-    <script src='model.js'></script>
-    -->
+    <header>
+    <h1>Remote model</h1>
+    <div class='description'>
+      This model is being controller by device orientation and WebSockets via the phone using Opera mobile.
+    </div>
+    </header>
+    <div id='main-container'>
+      <div id='container'></div>
+      <div id='angles' class='shadow'>
+        <ul>
+          <li>
+            <img src='img/device-alpha.png'>
+            &alpha;: <span id='alpha-value'>N/A</span> rad
+          </li>
+          <li>
+            <img src='img/device-beta.png'>
+            &beta;: <span id='beta-value'>N/A</span> rad
+          </li>
+          <li>
+            <img src='img/device-gamma.png'>
+            &gamma;: <span id='gamma-value'>N/A</span> rad
+          </li>
+        </ul>
+      </div>
+    </div>
     <script src="Three.js"></script>
     <script src='teapot.js'></script>
-    <!-- <script src="Three.js"></script>
-    <script src='teapot.js'></script> -->
   </body>
 </html>
