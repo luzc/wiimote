@@ -5,12 +5,6 @@ var $ = function(d) { return document.getElementById(d); };
 var WIDTH = 724, 
   HEIGHT = 512;
 
-// camera settings: fov, aspect ratio, near, far
-var FOV = 45,
-  ASPECT = WIDTH / HEIGHT,
-  NEAR = 0.1,
-  FAR = 10000;
-
 // get the DOM element to attach to
 var container = $('container');
 
@@ -24,17 +18,36 @@ renderer.clear();
 
 container.appendChild(renderer.domElement);
 
+// create a scene
+var scene = new THREE.Scene();
+
+// camera settings: fov, aspect ratio, near, far
+var FOV = 45,
+  ASPECT = WIDTH / HEIGHT,
+  NEAR = 0.1,
+  FAR = 10000;
+
 // create a camera and position camera on z axis (starts at 0,0,0)
 var camera = new THREE.PerspectiveCamera( FOV, ASPECT, NEAR, FAR);
 camera.position.z = 100;
 
-// create a scene
-var scene = new THREE.Scene();
-
 // add the camera to the scene
 scene.add(camera);
 
+// create some lights, position them and add it to the scene
+var spotlight = new THREE.SpotLight();
+spotlight.position.set( 170, 330, -160 );
+scene.add(spotlight);
+
+ambilight = new THREE.AmbientLight(0x333333);
+scene.add(ambilight);
+
+//enable shadows on the renderer
+renderer.shadowMapEnabled = true;
+
 // add an object (teapot) to the scene
+var teapot;
+
 var loader = new THREE.JSONLoader(),
 
   createScene = function createScene( geometry ) {
@@ -55,18 +68,6 @@ var loader = new THREE.JSONLoader(),
 
 loader.load('teapot-model.js', createScene );
 
-// create a spot light, position it and add it to the scene
-var light = new THREE.SpotLight();
-light.position.set( 170, 330, -160 );
-scene.add(light);
-
-light = new THREE.AmbientLight(0x333333);
-// light.position.set( 170, 330, -160 );
-scene.add(light);
-
-// enable shadows on the renderer
-renderer.shadowMapEnabled = true;
-
 // draw
 renderer.render(scene, camera);
 animate();
@@ -79,7 +80,7 @@ function animate() {
 
 window.addEventListener('DOMContentLoaded', function init() {
   //connect to server using websockets
-  var ws = new WebSocket('ws://0.0.0.0:8080/');
+  var ws = new WebSocket('ws://10.112.0.139:8080/');
   ws.onopen = function() {
     console.log('connection');
 	var alpha = $('alpha-value'),
